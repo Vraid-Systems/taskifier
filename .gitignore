@@ -1,0 +1,17 @@
+.DS_Store
+.gaedata
+
+*.pyc
+
+app.yaml
+
+autoload
+build
+dbindexer
+django
+djangoappengine
+djangotoolbox
+django_mongodb_engine
+filetransfers
+mediagenerator
+src
