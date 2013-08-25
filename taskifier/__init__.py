@@ -1,53 +1,43 @@
-import const
+import const, json
 from django.http import HttpResponse, HttpResponseRedirect
 from taskifier.api import DELETE, GET, POST, get_owner
 from taskifier.models import TaskOwner
 
-ERROR = "ERROR: "
+CONTENT_TYPE_JSON = "application/json"
 
-def taskrouter(request, owner_key = None, data_id = None):
-    """route data request to the correct handler and return HTTP response
+def taskrouter(request, owner_key = None, task_id = None):
+    """route data request to correct handler and return JSON HttpResponse
     
     Args:
         request: the HttpRequest object
         owner_key: string finger print of the user
-        data_id: a numeric identifier for Binary object
+        task_id: a numeric identifier for the task
     
     Returns:
-        HttpResponse or HttpResponseRedirect
+        HttpResponse - JSON
     """
-    response = {const.RESP_KEY_CONTENT: 'NOOP',
-                const.RESP_KEY_MIME: 'text/html',
-                const.RESP_KEY_STATUS: 200}
+    EMPTY_RESP = {}
     
-    bin_owner = None
+    task_owner = None
     if owner_key:
-        bin_owner = get_owner(owner_key)
+        task_owner = get_owner(owner_key)
     
     if request.method == 'OPTIONS':
-        response[const.RESP_KEY_CONTENT] = ''
-    elif request.method == 'GET':
-        response = GET(data_id)
-    elif bin_owner and isinstance(bin_owner, BinOwner):
-        if request.method == 'DELETE':
-            response = DELETE(bin_owner, data_id)
-        elif request.method == 'POST':
-            if request.FILES and len(request.FILES) == 1:
-                response = POST(bin_owner=bin_owner,
-                                data_id=data_id,
-                                uploaded_file=request.FILES['file'])
-    else:
-        response[const.RESP_KEY_CONTENT] = ERROR + 'invalid owner_key'
-        response[const.RESP_KEY_STATUS] = 403
-
-    if response[const.RESP_KEY_STATUS] == 302:
-        r_content = response[const.RESP_KEY_CONTENT]
-        return HttpResponseRedirect(r_content)
-    else:
-        aHttpResponse = HttpResponse(content=response[const.RESP_KEY_CONTENT],
-                            mimetype=response[const.RESP_KEY_MIME],
-                            status=response[const.RESP_KEY_STATUS])
-        return addCORSHeaders(aHttpResponse)
+        return getJsonHttpResponse(EMPTY_RESP)
+    
+    if request.method == 'POST':
+        if request.POST and len(request.POST) == 3:
+            return getJsonHttpResponse(POST(task_owner=task_owner,
+                                            task_id=task_id,
+                                            request_payload=request.POST))
+    
+    if request.method == 'GET':
+        return getJsonHttpResponse(GET(task_owner, task_id))
+    
+    if request.method == 'DELETE':
+        return getJsonHttpResponse(DELETE(task_owner, task_id))
+    
+    return getJsonHttpResponse(EMPTY_RESP)
 
 def addCORSHeaders(theHttpResponse):
     if theHttpResponse and isinstance(theHttpResponse, HttpResponse):
@@ -57,3 +47,7 @@ def addCORSHeaders(theHttpResponse):
         theHttpResponse['Access-Control-Allow-Methods'] = 'HEAD, GET, OPTIONS, POST, DELETE'
         theHttpResponse['Access-Control-Allow-Headers'] = 'origin, content-type, accept, x-requested-with'
     return theHttpResponse
+
+def getJsonHttpResponse(response):
+    aHttpResponse = HttpResponse(json.dumps(response), content_type=CONTENT_TYPE_JSON)
+    return addCORSHeaders(aHttpResponse)

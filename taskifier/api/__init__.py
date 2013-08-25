@@ -1,60 +1,64 @@
-from storagebin.internal import DELETE as int_DELETE
-from storagebin.internal import GET as int_GET
-from storagebin.internal import POST as int_POST
-from storagebin.internal import get_owner as int_get_owner
+from taskifier.internal import DELETE as int_DELETE
+from taskifier.internal import GET as int_GET
+from taskifier.internal import POST as int_POST
+from taskifier.internal import get_owner as int_get_owner
 
-def DELETE(bin_owner, data_id):
-    """Delete a binary object from the datastore
+def DELETE(task_owner, task_id):
+    """Delete a queued task
     
     Args:
-        bin_owner: the owner Model
-        data_id: a numeric identifier for Binary object
+        task_owner: the owner Model
+        task_id: a numeric identifier for task
     
     Returns:
         A dictionary for creating a HTTP response. Example:
-        {RESP_KEY_CONTENT: 'DELETE: [data_id]',
-         RESP_KEY_MIME: 'text/html',
-         RESP_KEY_STATUS: 200}
+        {const.RESP_KEY_ID: task_id,
+         const.RESP_KEY_SOURCE: "",
+         const.RESP_KEY_DEST: "",
+         const.RESP_KEY_CONTENT: ""}
     """
-    return int_DELETE(bin_owner, data_id)
+    return int_DELETE(task_owner, task_id)
 
-def GET(data_id):
-    """Get a binary object from the datastore
+def GET(task_owner, task_id):
+    """Get a queued task
     
     Args:
-        data_id: a numeric identifier for Binary object
+        task_owner: the owner Model
+        task_id: a numeric identifier for task
     
     Returns:
         A dictionary for creating a HTTP response. Example:
-        {RESP_KEY_CONTENT: [content URI],
-         RESP_KEY_MIME: 'text/html',
-         RESP_KEY_STATUS: 302}
+        {const.RESP_KEY_ID: task_id,
+         const.RESP_KEY_SOURCE: task.source,
+         const.RESP_KEY_DEST: task.dest,
+         const.RESP_KEY_CONTENT: task.content}
     """
-    return int_GET(data_id)
+    return int_GET(task_owner, task_id)
 
-def POST(bin_owner, data_id, uploaded_file):
-    """Add/update a binary object to/in the datastore
+def POST(task_owner, task_id, request_payload):
+    """Add/update a task to/in the queue
     
     Args:
-        bin_owner: the owner Model
-        data_id: a numeric identifier for Binary object
-        uploaded_file: an instance of django.http.UploadedFile
+        task_owner: the owner Model
+        task_id: a numeric identifier for task
+        request_payload: an instance of django.http.QueryDict with source, dest, content fields
     
     Returns:
         A dictionary for creating a HTTP response. Example:
-        {RESP_KEY_CONTENT: 'OK',
-         RESP_KEY_MIME: 'text/html',
-         RESP_KEY_STATUS: 200}
+        {const.RESP_KEY_ID: task_id,
+         const.RESP_KEY_SOURCE: request_payload.source,
+         const.RESP_KEY_DEST: request_payload.dest,
+         const.RESP_KEY_CONTENT: request_payload.content}
     """
-    return int_POST(bin_owner, data_id, uploaded_file)
+    return int_POST(task_owner, task_id, request_payload)
 
 def get_owner(owner_key):
-    """Retrieve the BinOwner object via the owner_key
+    """Retrieve the TaskOwner object via the owner_key
     
     Args:
         owner_key: string finger print of the user
     
     Returns:
-        BinOwner
+        TaskOwner
     """
     return int_get_owner(owner_key)
