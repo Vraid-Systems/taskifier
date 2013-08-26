@@ -8,4 +8,5 @@ urlpatterns = patterns('',
                         'django.views.generic.simple.direct_to_template',
                         {'template': 'home.html'}),
                        (r'^data/(\w+)$', 'taskifier.taskrouter'),
-                       (r'^data/(\w+)/(\d+)$', 'taskifier.taskrouter'),)
+                       (r'^data/(\w+)/(\d+)$', 'taskifier.taskrouter'),
+                       (r'^pushqueue/cron', 'taskifier.internal.pushqueue.cron'),)

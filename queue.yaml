@@ -1,0 +1,13 @@
+total_storage_limit: 100M # free limit is 500MB
+
+queue:
+- name: send
+  bucket_size: 5
+  max_concurrent_requests: 10
+  mode: push
+  rate: 5/s # 5 tasks a second
+  retry_parameters:
+    task_age_limit: 5m
+    min_backoff_seconds: 10
+    max_backoff_seconds: 200
+    max_doublings: 2

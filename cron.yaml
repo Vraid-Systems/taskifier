@@ -1,1 +1,4 @@
 cron:
+- description: check for items to add to pushqueue
+  url: /pushqueue/cron
+  schedule: every 5 minutes

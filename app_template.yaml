@@ -30,5 +30,9 @@ handlers:
   static_dir: django/contrib/admin/media
   expiration: '0'
 
+- url: /pushqueue/*
+  script: djangoappengine.main.application
+  login: admin
+
 - url: /.*
   script: djangoappengine.main.application
