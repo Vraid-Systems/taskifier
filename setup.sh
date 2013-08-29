@@ -14,13 +14,14 @@ cat app.yaml | sed -e 's/version: REPLACE_ME/version: '$2'/g' > app.yaml
 
 mkdir -p build
 
-pip install --download='./build' --no-install -r requirements.txt
+pip install --download='./build' --no-install -e git+ssh://git@github.com/django-nonrel/djangotoolbox.git@toolbox-1.4#egg=djangotoolbox
+pip install --download='./build' --no-install -e git+ssh://git@github.com/django-nonrel/djangoappengine.git@appengine-1.4#egg=djangoappengine
+pip install --download='./build' --no-install -e git+ssh://git@github.com/django-nonrel/django-dbindexer.git@dbindexer-1.4#egg=django-dbindexer
+pip install --download='./build' --no-install -e git+ssh://git@github.com/django-nonrel/django.git@nonrel-1.4#egg=django-nonrel
+pip install --download='./build' --no-install -e hg+ssh://hg@bitbucket.org/twanschik/django-autoload#egg=django-autoload
 
-unzip -q build/django-autoload-0.01.zip -d build
-unzip -q build/django-dbindexer-0.3.zip -d build
-unzip -q build/django-nonrel-1.4.5.zip -d build
-unzip -q build/djangoappengine-1.0.zip -d build
-unzip -q build/djangotoolbox-0.9.2.zip -d build
+unzip -q build/\*.zip -d build
+tar xzf build/*.tar.gz --directory build
 
 cp -r build/django-autoload/autoload ./autoload
 cp -r build/django-dbindexer/dbindexer ./dbindexer
