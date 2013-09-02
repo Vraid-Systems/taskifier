@@ -6,7 +6,7 @@ from taskifier.models import Task, TaskOwner
 EMPTY_RESP = {}
 
 def DELETE(task_owner, task_id):
-    task = _get_task(task_id)
+    task = get_task_by_id(task_id)
     if task and _is_owner(task_owner, task):
         task.delete()
         
@@ -17,7 +17,7 @@ def DELETE(task_owner, task_id):
     return EMPTY_RESP
 
 def GET(task_owner, task_id):
-    task = _get_task(task_id)
+    task = get_task_by_id(task_id)
     
     if task and _is_owner(task_owner, task):
         return {const.RESP_KEY_ID: task_id,
@@ -31,12 +31,13 @@ def POST(task_owner, task_id, request_payload):
         return EMPTY_RESP
     
     if task_id is None:
+        # --> TODO pull in ready_time <--
         task = Task(owner=task_owner, source=request_payload.source,
                     dest=request_payload.dest, content=request_payload.content)
         task.save()
         task_id = task.id
     else:
-        task = _get_task(task_id)
+        task = get_task_by_id(task_id)
         task.source = request_payload.source
         task.dest = request_payload.dest
         task.content = request_payload.content
@@ -54,7 +55,7 @@ def get_owner(owner_key):
     else:
         return None
 
-def _get_task(task_id):
+def get_task_by_id(task_id):
     if task_id:
         task = None
         try:
