@@ -23,6 +23,7 @@ Tested Environments
 ------------
 - Cygwin (bash) on Windows 7 (64 bit)
 - Google App Engine Release 1.8.2
+- OSX 10.8.x (64 bit)
 
 Development Server
 ------------
