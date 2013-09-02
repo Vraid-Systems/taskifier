@@ -9,4 +9,5 @@ urlpatterns = patterns('',
                         {'template': 'home.html'}),
                        (r'^data/(\w+)$', 'taskifier.taskrouter'),
                        (r'^data/(\w+)/(\d+)$', 'taskifier.taskrouter'),
-                       (r'^pushqueue/cron', 'taskifier.internal.pushqueue.cron'),)
+                       (r'^pushqueue/cron', 'taskifier.internal.pushqueue.cron'),
+                       (r'^pushqueue/worker', 'taskifier.internal.pushqueue.worker'),)

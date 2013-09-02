@@ -5,7 +5,7 @@ class Task(models.Model):
     source = models.TextField()
     dest = models.TextField()
     content = models.TextField()
-    delay_seconds = models.IntegerField(default=0) # plenty for 50 years = 1.57 billion
+    ready_time = models.DateTimeField(auto_now=True, auto_now_add=True)
     modified = models.DateTimeField(auto_now=True, auto_now_add=True)
 
 class TaskOwner(models.Model):
