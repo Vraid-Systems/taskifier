@@ -3,26 +3,29 @@ taskifier
 
 django-nonrel based project for using Google App Engine as a REST-ish taskqueue
 
-taskifier is based on the [django-testapp](https://github.com/django-nonrel/django-testapp)
-template for creating a Google App Engine app with [django-nonrel](https://github.com/django-nonrel).
+taskifier is based on the
+[django-testapp](https://github.com/django-nonrel/django-testapp)
+template for creating a Google App Engine app with
+[django-nonrel](https://github.com/django-nonrel).
 Run `./setup.sh APP_ID VERSION_ID` to initialize a development environment;
 this will download all dependencies and generate an `app.yaml`.
 
 Development Dependencies
 ------------
-- a standard [POSIX](http://en.wikipedia.org/wiki/POSIX#POSIX-oriented_operating_systems) shell
+- a standard [POSIX](http://en.wikipedia.org/wiki/POSIX#POSIX-oriented_operating_systems)
+shell with unzip and tar binaries installed
 - [git](http://git-scm.com/downloads) and [hg](http://mercurial.selenic.com/wiki/Download) binaries in path
 - [pip](http://pypi.python.org/pypi/pip) binary in path
 
 Gotchas
 ------------
-- GitHub requires you to have the public-key of the cloning machine on file,
+- When using ssh transport
+GitHub requires you to have the public-key of the cloning machine on file,
 even when cloning from a public repository.
 
-Tested Environments
+Tested Dev Environments
 ------------
 - Cygwin (bash) on Windows 7 (64 bit)
-- Google App Engine Release 1.8.2
 - OSX 10.8.x (64 bit)
 
 Development Server
