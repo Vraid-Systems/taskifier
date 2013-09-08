@@ -11,11 +11,11 @@ class WorkerHelper:
     def isEmail(self, theEmail):
         # http://stackoverflow.com/questions/8022530/python-check-for-valid-email-address
         # "There is no point."++
-        if self.RE_EMAIL.match(theEmail):
+        if theEmail and self.RE_EMAIL.match(theEmail):
             return True
         return False
 
     def isTwitterHandle(self, theHandle):
-        if self.RE_TWITTER.match(theHandle):
+        if theHandle and self.RE_TWITTER.match(theHandle):
             return True
         return False
