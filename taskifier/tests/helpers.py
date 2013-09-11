@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from taskifier.internal.TaskPayloadHelper import TaskPayloadHelper
 from taskifier.internal.WorkerHelper import WorkerHelper
 
 TEST_EMAIL_CASES = ["user@domain.com", "@user@domain.com", "@cool_dude_ty", "user@domain.sub.com", "user@domain.com@.com"]
@@ -7,6 +8,11 @@ TEST_EMAIL_EXPECTS = [True, False, False, True, False]
 
 TEST_TWITTER_CASES = ["user@domain.com", "@cool_dude_ty", "@cool-dude-ty", "@monkey.freud", "@___"]
 TEST_TWITTER_EXPECTS = [False, True, False, False, True]
+
+class TaskPayloadHelperTestCase(TestCase):
+    def setUp(self):
+        self.taskPayloadHelper = TaskPayloadHelper()
+    # !!! TODO add method coverage !!! #
 
 class WorkerHelperTestCase(TestCase):
     def setUp(self):

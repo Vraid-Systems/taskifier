@@ -2,6 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from taskifier import const
 from taskifier.models import Task, TaskOwner
+from taskifier.internal.TaskPayloadHelper import TaskPayloadHelper
 
 EMPTY_RESP = {}
 
@@ -27,13 +28,14 @@ def GET(task_owner, task_id):
     return EMPTY_RESP
     
 def POST(task_owner, task_id, request_payload):
-    if _is_valid_payload(request_payload) == False:
+    taskPayloadHelper = TaskPayloadHelper(request_payload)
+    if not taskPayloadHelper.is_valid() or taskPayloadHelper.is_duplicate():
         return EMPTY_RESP
     
     if task_id is None:
-        # --> TODO pull in ready_time <--
         task = Task(owner=task_owner, source=request_payload.source,
-                    dest=request_payload.dest, content=request_payload.content)
+                    dest=request_payload.dest, content=request_payload.content,
+                    ready_time=taskPayloadHelper.get_datetime_obj())
         task.save()
         task_id = task.id
     else:
@@ -71,12 +73,3 @@ def _is_owner(task_owner, task):
         return (task_owner.key == task.owner.key)
     else:
         return False
-
-def _is_valid_payload(request_payload):
-    if len(request_payload) != 3:
-        return False
-    
-    if (request_payload.source is None) or (request_payload.dest is None) or (request_payload.content is None):
-        return False
-    
-    return True

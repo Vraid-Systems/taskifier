@@ -26,7 +26,7 @@ def taskrouter(request, owner_key = None, task_id = None):
         return getJsonHttpResponse(EMPTY_RESP)
     
     if request.method == 'POST':
-        if request.POST and len(request.POST) == 3:
+        if request.POST:
             return getJsonHttpResponse(POST(task_owner=task_owner,
                                             task_id=task_id,
                                             request_payload=request.POST))
