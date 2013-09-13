@@ -2,8 +2,8 @@ from django.db import models
 
 class Task(models.Model):
     owner = models.ForeignKey('TaskOwner', on_delete=models.CASCADE)
-    source = models.TextField()
-    dest = models.TextField()
+    source = models.CharField(max_length=255)
+    dest = models.CharField(max_length=255)
     content = models.TextField()
     ready_time = models.DateTimeField(auto_now=True, auto_now_add=True)
     modified = models.DateTimeField(auto_now=True, auto_now_add=True)
