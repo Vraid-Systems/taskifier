@@ -35,7 +35,7 @@ def POST(task_owner, task_id, request_payload):
     if task_id is None:
         task = Task(owner=task_owner, source=request_payload.source,
                     dest=request_payload.dest, content=request_payload.content,
-                    ready_time=taskPayloadHelper.get_datetime_obj())
+                    ready_time=taskPayloadHelper.get_ready_datetime())
         task.save()
         task_id = task.id
     else:
