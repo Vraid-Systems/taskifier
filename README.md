@@ -28,18 +28,19 @@ Tested Dev Environments
 - Cygwin (bash) on Windows 7 (64 bit)
 - OSX 10.8.x (64 bit)
 
-Development Server
+Development Commands
 ------------
-1. cd into the root of a cloned copy of this project
-2. run: `python manage.py runserver`
+- local dev server: `python manage.py runserver`
+- run all unit tests: `python manage.py test taskifier`
+- run specific unit test suite: `python manage.py test taskifier.QueueTestSuite`
+- run specific unit test: `python manage.py test taskifier.QueueTestSuite.test_ready_and_delete_tasks`
 
 Production Deploy
 ------------
-1. cd into the root of a cloned copy of this project
-2. deploy the project to GAE: `python manage.py deploy`. This could take 10
+1. deploy the project to GAE: `python manage.py deploy`. This could take 10
 minutes. May want to wait a few more minutes after it finishes for the HRD
 to stabilize.
-3. Create the first owner by connecting to the remote datastore -
+2. Create the first owner by connecting to the remote datastore -
 `python manage.py remote shell` - and executing the following with the remote
 Python interpreter:
 
