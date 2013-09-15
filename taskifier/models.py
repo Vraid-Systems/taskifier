@@ -5,7 +5,7 @@ class Task(models.Model):
     source = models.CharField(max_length=255)
     dest = models.CharField(max_length=255)
     content = models.TextField()
-    ready_time = models.DateTimeField(auto_now=True, auto_now_add=True)
+    ready_time = models.DateTimeField()
     modified = models.DateTimeField(auto_now=True, auto_now_add=True)
 
 class TaskOwner(models.Model):

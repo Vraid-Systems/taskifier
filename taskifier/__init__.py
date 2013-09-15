@@ -1,5 +1,7 @@
 import const, json
+
 from django.http import HttpResponse, HttpResponseRedirect
+
 from taskifier.api import DELETE, GET, POST, get_owner
 from taskifier.models import TaskOwner
 
@@ -49,5 +51,6 @@ def addCORSHeaders(theHttpResponse):
     return theHttpResponse
 
 def getJsonHttpResponse(response):
-    aHttpResponse = HttpResponse(json.dumps(response), content_type=CONTENT_TYPE_JSON)
+    json_response = json.dumps(response)
+    aHttpResponse = HttpResponse(json_response, content_type=CONTENT_TYPE_JSON)
     return addCORSHeaders(aHttpResponse)

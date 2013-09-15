@@ -1,4 +1,8 @@
+from datetime import datetime
+
 from django.core.exceptions import ObjectDoesNotExist
+
+import json
 
 from taskifier import const
 from taskifier.models import Task, TaskOwner
@@ -26,7 +30,7 @@ def GET(task_owner, task_id):
                 const.KEY_SOURCE: task.source,
                 const.KEY_DEST: task.dest,
                 const.KEY_CONTENT: task.content,
-                const.KEY_READY_TIME: task.ready_time}
+                const.KEY_READY_TIME: _get_json_from_datetime(task.ready_time)}
     return EMPTY_RESP
     
 def POST(task_owner, task_id, request_payload):
@@ -63,6 +67,13 @@ def get_owner(owner_key):
     else:
         return None
 
+def _get_json_from_datetime(obj):
+    dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime) else None
+    json_str = json.dumps(obj, default=dthandler)
+    json_str = json_str.replace('"', '')
+    json_str = _rreplace(json_str, "000", "Z")
+    return json_str
+
 def _get_task_by_id(task_id):
     if task_id:
         task = None
@@ -79,3 +90,12 @@ def _is_owner(task_owner, task):
         return (task_owner.key == task.owner.key)
     else:
         return False
+
+def _rreplace(s, old, new):
+    offset = 0 - len(old)
+    remainder = s[:offset]
+    replace_array = s.split(remainder)
+    replace_confirm = replace_array[(len(replace_array) - 1)]
+    if replace_confirm == old:
+        return s[:-len(old)] + new
+    return s
