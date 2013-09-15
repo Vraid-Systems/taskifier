@@ -8,8 +8,6 @@ from taskifier import const
 from taskifier.models import Task, TaskOwner
 from taskifier.internal.TaskPayloadHelper import TaskPayloadHelper
 
-EMPTY_RESP = {}
-
 def DELETE(task_owner, task_id):
     task = _get_task_by_id(task_id)
     if task and _is_owner(task_owner, task):
@@ -20,7 +18,8 @@ def DELETE(task_owner, task_id):
                 const.KEY_DEST: "",
                 const.KEY_CONTENT: "",
                 const.KEY_READY_TIME: ""}
-    return EMPTY_RESP
+    return {const.KEY_RESP_STATUS: "ERROR",
+            const.KEY_RESP_STATUS_TEXT: "task not found or bad auth"}
 
 def GET(task_owner, task_id):
     task = _get_task_by_id(task_id)
@@ -31,12 +30,18 @@ def GET(task_owner, task_id):
                 const.KEY_DEST: task.dest,
                 const.KEY_CONTENT: task.content,
                 const.KEY_READY_TIME: _get_json_from_datetime(task.ready_time)}
-    return EMPTY_RESP
+    return {const.KEY_RESP_STATUS: "ERROR",
+            const.KEY_RESP_STATUS_TEXT: "task not found or bad auth"}
     
 def POST(task_owner, task_id, request_payload):
+    if task_owner is None:
+        return {const.KEY_RESP_STATUS: "ERROR",
+                const.KEY_RESP_STATUS_TEXT: "specified TaskOwner object not found"}
+    
     taskPayloadHelper = TaskPayloadHelper(request_payload)
     if not taskPayloadHelper.is_valid() or taskPayloadHelper.is_duplicate():
-        return EMPTY_RESP
+        return {const.KEY_RESP_STATUS: "ERROR",
+                const.KEY_RESP_STATUS_TEXT: "payload is invalid or already exists"}
     
     if task_id is None:
         task = Task(owner=task_owner,
