@@ -7,24 +7,26 @@ from taskifier.internal.TaskPayloadHelper import TaskPayloadHelper
 EMPTY_RESP = {}
 
 def DELETE(task_owner, task_id):
-    task = get_task_by_id(task_id)
+    task = _get_task_by_id(task_id)
     if task and _is_owner(task_owner, task):
         task.delete()
         
-        return {const.RESP_KEY_ID: task_id,
-                const.RESP_KEY_SOURCE: "",
-                const.RESP_KEY_DEST: "",
-                const.RESP_KEY_CONTENT: ""}
+        return {const.KEY_ID: task_id,
+                const.KEY_SOURCE: "",
+                const.KEY_DEST: "",
+                const.KEY_CONTENT: "",
+                const.KEY_READY_TIME: ""}
     return EMPTY_RESP
 
 def GET(task_owner, task_id):
-    task = get_task_by_id(task_id)
+    task = _get_task_by_id(task_id)
     
     if task and _is_owner(task_owner, task):
-        return {const.RESP_KEY_ID: task_id,
-                const.RESP_KEY_SOURCE: task.source,
-                const.RESP_KEY_DEST: task.dest,
-                const.RESP_KEY_CONTENT: task.content}
+        return {const.KEY_ID: task_id,
+                const.KEY_SOURCE: task.source,
+                const.KEY_DEST: task.dest,
+                const.KEY_CONTENT: task.content,
+                const.KEY_READY_TIME: task.ready_time}
     return EMPTY_RESP
     
 def POST(task_owner, task_id, request_payload):
@@ -33,22 +35,26 @@ def POST(task_owner, task_id, request_payload):
         return EMPTY_RESP
     
     if task_id is None:
-        task = Task(owner=task_owner, source=request_payload.source,
-                    dest=request_payload.dest, content=request_payload.content,
+        task = Task(owner=task_owner,
+                    source=taskPayloadHelper[const.KEY_SOURCE],
+                    dest=taskPayloadHelper[const.KEY_DEST],
+                    content=taskPayloadHelper[const.KEY_CONTENT],
                     ready_time=taskPayloadHelper.get_ready_datetime())
         task.save()
         task_id = task.id
     else:
-        task = get_task_by_id(task_id)
-        task.source = request_payload.source
-        task.dest = request_payload.dest
-        task.content = request_payload.content
+        task = _get_task_by_id(task_id)
+        task.source = taskPayloadHelper[const.KEY_SOURCE]
+        task.dest = taskPayloadHelper[const.KEY_DEST]
+        task.content = taskPayloadHelper[const.KEY_CONTENT]
+        task.ready_time = taskPayloadHelper.get_ready_datetime()
         task.save()
     
-    return {const.RESP_KEY_ID: task_id,
-            const.RESP_KEY_SOURCE: request_payload.source,
-            const.RESP_KEY_DEST: request_payload.dest,
-            const.RESP_KEY_CONTENT: request_payload.content}
+    return {const.KEY_ID: task_id,
+            const.KEY_SOURCE: taskPayloadHelper[const.KEY_SOURCE],
+            const.KEY_DEST: taskPayloadHelper[const.KEY_DEST],
+            const.KEY_CONTENT: taskPayloadHelper[const.KEY_CONTENT],
+            const.KEY_READY_TIME: taskPayloadHelper[const.KEY_READY_TIME]}
 
 def get_owner(owner_key):
     query_set = TaskOwner.objects.filter(key=owner_key)
@@ -57,7 +63,7 @@ def get_owner(owner_key):
     else:
         return None
 
-def get_task_by_id(task_id):
+def _get_task_by_id(task_id):
     if task_id:
         task = None
         try:

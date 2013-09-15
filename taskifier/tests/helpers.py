@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.test import TestCase
 
+from taskifier import const
 from taskifier.models import Task, TaskOwner
 from taskifier.internal.TaskPayloadHelper import TaskPayloadHelper
 from taskifier.internal.WorkerHelper import WorkerHelper
@@ -15,10 +16,10 @@ TEST_EMAIL_EXPECTS = [True, False, False, True, False]
 TEST_TWITTER_CASES = ["user@domain.com", "@cool_dude_ty", "@cool-dude-ty", "@monkey.freud", "@___"]
 TEST_TWITTER_EXPECTS = [False, True, False, False, True]
 
-TEST_PAYLOAD = {"source":"a@domain.com",
-                "dest":"b@domain.com",
-                "content":"this is some text",
-                "ready_time":TEST_DATE}
+TEST_PAYLOAD = {const.KEY_SOURCE: "a@domain.com",
+                const.KEY_DEST: "b@domain.com",
+                const.KEY_CONTENT: "this is some text",
+                const.KEY_READY_TIME: TEST_DATE}
 
 class TaskPayloadHelperTestCase(TestCase):
     def setUp(self):
@@ -35,9 +36,9 @@ class TaskPayloadHelperTestCase(TestCase):
         self.assertFalse(self.taskPayloadHelper.is_duplicate())
         
         task = Task(owner=self.owner,
-                    source=TEST_PAYLOAD['source'],
-                    dest=TEST_PAYLOAD['dest'],
-                    content=TEST_PAYLOAD['content'],
+                    source=TEST_PAYLOAD[const.KEY_SOURCE],
+                    dest=TEST_PAYLOAD[const.KEY_DEST],
+                    content=TEST_PAYLOAD[const.KEY_CONTENT],
                     ready_time=TEST_DATE_EXPECT)
         task.save()
         
