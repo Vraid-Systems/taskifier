@@ -30,6 +30,7 @@ Tested Dev Environments
 
 Development Commands
 ------------
+- load example `TaskOwner` for local testing: `python manage.py loaddata taskifier/fixtures/test_data.yaml`
 - local dev server: `python manage.py runserver`
 - run all unit tests: `python manage.py test taskifier`
 - run specific unit test suite: `python manage.py test taskifier.QueueTestSuite`

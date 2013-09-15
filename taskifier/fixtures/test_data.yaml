@@ -1,0 +1,6 @@
+- model: taskifier.TaskOwner
+  pk: 1
+  fields:
+    email: example@example.com
+    key: example
+    modified: "2013-03-16T17:41:28+00:00"
