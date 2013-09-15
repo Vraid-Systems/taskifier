@@ -7,7 +7,7 @@ from taskifier import const
 from taskifier import taskrouter
 from taskifier.models import TaskOwner
 
-class FullRunTestCase(TestCase):
+class FullRunTestSuite(TestCase):
     def setUp(self):
         self.taskowner = TaskOwner(email='example@example.com', key='example')
         self.taskowner.save()

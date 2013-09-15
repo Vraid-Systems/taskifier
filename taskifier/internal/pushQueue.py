@@ -22,8 +22,8 @@ def _create_task_from_db(db_Task_obj):
 def cron(request): #called by cron.yaml through django
     db_Task_objs = _get_ready_tasks()
     if db_Task_objs is None:
-        return getJsonHttpResponse({const.RESP_STATUS_KEY: "OK",
-                                    const.RESP_STATUS_TEXT_KEY: "no stored tasks ready"})
+        return getJsonHttpResponse({const.KEY_RESP_STATUS: "OK",
+                                    const.KEY_RESP_STATUS_TEXT: "no stored tasks ready"})
     
     for db_Task_obj in db_Task_objs:
         queue_Task_obj = _create_task_from_db(db_Task_obj)
@@ -32,8 +32,8 @@ def cron(request): #called by cron.yaml through django
     
     _delete_processed_tasks(db_Task_objs)
     
-    return getJsonHttpResponse({const.RESP_STATUS_KEY: "OK",
-                                const.RESP_STATUS_TEXT_KEY: "stored tasks queued"})
+    return getJsonHttpResponse({const.KEY_RESP_STATUS: "OK",
+                                const.KEY_RESP_STATUS_TEXT: "stored tasks queued"})
 
 def _get_ready_tasks():
     #lte filter --> http://stackoverflow.com/a/4668703
@@ -54,8 +54,8 @@ def worker(request): #called by queued task
                       body=request.POST.content,
                       reply_to=request.POST.source)
             
-            return getJsonHttpResponse({const.RESP_STATUS_KEY: "OK",
-                                        const.RESP_STATUS_TEXT_KEY: "email sent to "+request.POST.dest})
+            return getJsonHttpResponse({const.KEY_RESP_STATUS: "OK",
+                                        const.KEY_RESP_STATUS_TEXT: "email sent to "+request.POST.dest})
     
-    return getJsonHttpResponse({const.RESP_STATUS_KEY: "FAIL",
-                                const.RESP_STATUS_TEXT_KEY: "nothing to do"})
+    return getJsonHttpResponse({const.KEY_RESP_STATUS: "FAIL",
+                                const.KEY_RESP_STATUS_TEXT: "nothing to do"})

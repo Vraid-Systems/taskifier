@@ -21,7 +21,7 @@ TEST_PAYLOAD = {const.KEY_SOURCE: "a@domain.com",
                 const.KEY_CONTENT: "this is some text",
                 const.KEY_READY_TIME: TEST_DATE}
 
-class TaskPayloadHelperTestCase(TestCase):
+class TaskPayloadHelperTestSuite(TestCase):
     def setUp(self):
         self.taskPayloadHelper = TaskPayloadHelper(TEST_PAYLOAD)
         
@@ -47,7 +47,7 @@ class TaskPayloadHelperTestCase(TestCase):
     def test_is_valid(self):
         self.assertTrue(self.taskPayloadHelper.is_valid())
 
-class WorkerHelperTestCase(TestCase):
+class WorkerHelperTestSuite(TestCase):
     def setUp(self):
         self.workerHelper = WorkerHelper()
     
