@@ -15,14 +15,14 @@ class QueueTestSuite(TestCase):
                     source="@handle_a",
                     dest="@handle_b",
                     content="some message",
-                    ready_time=datetime.now() + timedelta(minutes = 10))
+                    ready_time=datetime.utcnow() + timedelta(minutes = 10))
         task_1.save()
         
         task_2 = Task(owner=self.taskowner,
                     source="a@domain.com",
                     dest="b@domain.com",
                     content="some message",
-                    ready_time=datetime.now())
+                    ready_time=datetime.utcnow())
         task_2.save()
         
         ready_tasks = pushQueue._get_ready_tasks()
