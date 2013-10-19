@@ -10,6 +10,8 @@ template for creating a Google App Engine app with
 Run `./setup.sh APP_ID VERSION_ID` to initialize a development environment;
 this will download all dependencies and generate an `app.yaml`.
 
+For use with [taskifier_js](https://github.com/jzerbe/taskifier_js).
+
 Development Dependencies
 ------------
 - a standard [POSIX](http://en.wikipedia.org/wiki/POSIX#POSIX-oriented_operating_systems)

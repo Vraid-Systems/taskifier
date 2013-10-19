@@ -1,8 +1,25 @@
 {% extends 'base.html' %}
-{% block title %}edit me{% endblock %}
+{% block title %}usage{% endblock %}
 
 {% block content %}
 
-this is where content will go
+<b>task_id</b> - unsigned numeric identifier/key of task<br />
+<b>owner_key</b> - text string used in identifing task owner to this system<br />
+<br />
+Store task data:<br />
+POST /data/[owner_key]/[task_id]<br />
+<i>application/x-www-form-urlencoded</i> payload with POST parameters:
+<b>source</b>, <b>dest</b>, <b>content</b>, <b>ready_time</b>. <b>ready_time</b>
+must be in ISO-8601 format (UTC) - <i>2013-09-13T04:22:58.578Z</i> - it is the
+earliest time at which the task should be processed.<br />
+<br />
+Retrieve task data as JSON in response body:<br />
+GET /data/public/[task_id]<br />
+GET /data/[owner_key]/[task_id]<br />
+Example JSON output: {"id": 343500, "source": "robot@app.domain", "dest": "user@other.domain",
+"content": "notification message text", "ready_time": "2013-09-13T04:22:58.578Z"}<br />
+<br />
+Delete task data:<br />
+DELETE /data/[owner_key]/[task_id]<br />
 
 {% endblock %}
